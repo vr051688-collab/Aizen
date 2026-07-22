@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varun N — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2e4cd;
+    --bg-panel:#fffaf0;
+    --bg-panel-alt:#e9d7b7;
+    --bg-card:#fdf6e8;
+    --line:#d8c19a;
+    --text:#3a2a18;
+    --text-dim:#7a6248;
+    --text-faint:#a08a68;
+    --brown:#6b3f22;
+    --brown-deep:#4a2c17;
+    --bottle:#154d33;
+    --bottle-deep:#0d3a26;
+    --lgreen:#7fae7a;
+    --lgreen-soft:#c9e0bd;
+    --radius:10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+  }
+  h1,h2,h3,.mono{font-family:'Sora', sans-serif;}
+  a{color:inherit; text-decoration:none;}
+
+  .sidebar{
+    width:260px; flex-shrink:0;
+    background:var(--bottle-deep);
+    color:#eaf3ec;
+    display:flex; flex-direction:column;
+    height:100vh; position:sticky; top:0;
+    padding:22px 0;
+  }
+  .sidebar-brand{padding:0 20px 18px 20px; border-bottom:1px solid rgba(255,255,255,0.12); margin-bottom:14px; display:flex; align-items:center; gap:12px;}
+  .sidebar-brand img{width:52px; height:52px; border-radius:12px; object-fit:cover; box-shadow:0 0 0 2px var(--bottle-deep), 0 0 0 4px var(--lgreen);}
+  .sidebar-brand .name{font-family:'Sora'; font-weight:700; font-size:16px;}
+  .sidebar-brand .role{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--lgreen-soft); margin-top:3px;}
+
+  nav.menu{flex:1; padding:6px 12px; overflow-y:auto;}
+  .menu-label{font-family:'JetBrains Mono'; font-size:10px; letter-spacing:1.5px; color:rgba(234,243,236,0.45); padding:14px 10px 6px 10px; text-transform:uppercase;}
+  .menu-item{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px; border-radius:8px; cursor:pointer;
+    font-size:13.5px; color:rgba(234,243,236,0.8); margin-bottom:2px;
+    border-left:3px solid transparent;
+  }
+  .menu-item .ic{width:20px; text-align:center; font-size:13px;}
+  .menu-item:hover{background:rgba(255,255,255,0.06); color:#fff;}
+  .menu-item.active{background:rgba(127,174,122,0.18); color:#fff; border-left:3px solid var(--lgreen);}
+
+  .sidebar-foot{padding:14px 20px 0 20px; border-top:1px solid rgba(255,255,255,0.12); margin-top:10px;}
+  .sidebar-foot a{display:block; font-size:11.5px; color:rgba(234,243,236,0.75); margin-bottom:8px;}
+  .sidebar-foot a:hover{color:#fff;}
+
+  main{flex:1; min-width:0; padding:32px 40px 60px 40px;}
+  .topbar{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:10px;}
+  .breadcrumb{font-family:'JetBrains Mono'; font-size:11.5px; color:var(--text-faint);}
+  .breadcrumb span{color:var(--brown);}
+  .page-title{font-size:26px; font-weight:700; margin-top:4px; color:var(--brown-deep);}
+  .page-sub{color:var(--text-dim); font-size:13.5px; margin-top:6px; max-width:640px;}
+
+  .page{display:none;}
+  .page.active{display:block; animation:fadein .35s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .panel{background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:18px;}
+  .panel h3{font-size:15px; margin-bottom:12px; display:flex; align-items:center; gap:8px; color:var(--brown-deep);}
+  .panel h3 .dot{width:8px; height:8px; border-radius:2px; background:var(--bottle);}
+  .panel p{font-size:13.5px; line-height:1.7; color:var(--text-dim);}
+  .panel p + p{margin-top:10px;}
+
+  .home-grid{display:grid; grid-template-columns:320px 1fr; gap:20px;}
+  @media(max-width:860px){.home-grid{grid-template-columns:1fr;}}
+
+  .profile-card{background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:26px; text-align:center;}
+  .profile-card img{width:120px; height:120px; border-radius:16px; object-fit:cover; box-shadow:0 0 0 3px var(--bg-card), 0 0 0 6px var(--lgreen); margin-bottom:16px;}
+  .profile-card h2{font-size:19px; color:var(--brown-deep);}
+  .profile-card .ptitle{font-family:'JetBrains Mono'; font-size:11.5px; color:var(--bottle); margin-top:4px;}
+  .profile-card .ploc{font-size:12px; color:var(--text-faint); margin-top:8px;}
+  .profile-links{display:flex; flex-direction:column; gap:8px; margin-top:18px;}
+  .profile-links a{
+    font-family:'JetBrains Mono'; font-size:11.5px; padding:9px 12px; border-radius:8px;
+    background:var(--bg-panel-alt); color:var(--brown-deep); border:1px solid var(--line);
+    display:flex; align-items:center; gap:8px; justify-content:center;
+  }
+  .profile-links a:hover{background:var(--lgreen-soft); border-color:var(--lgreen);}
+
+  .beside-panel{background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px;}
+  .beside-panel h3{font-size:15px; margin-bottom:4px; color:var(--brown-deep);}
+  .beside-panel .sub{font-size:12px; color:var(--text-faint); margin-bottom:16px;}
+  .link-row{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    padding:14px 16px; border-radius:9px; background:var(--bg-panel-alt); border:1px solid var(--line);
+    margin-bottom:10px;
+  }
+  .link-row .lt{font-size:13.5px; font-weight:600; color:var(--brown-deep);}
+  .link-row .ls{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--text-faint); margin-top:3px;}
+  .link-row .actions{display:flex; gap:8px; flex-shrink:0;}
+  .link-row .actions a{
+    font-family:'JetBrains Mono'; font-size:10.5px; padding:6px 11px; border-radius:6px;
+    background:var(--bottle); color:#fff;
+  }
+  .link-row .actions a.alt{background:transparent; border:1px solid var(--bottle); color:var(--bottle);}
+  .link-row .actions a:hover{background:var(--bottle-deep);}
+
+  .stat-strip{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px;}
+  @media(max-width:700px){.stat-strip{grid-template-columns:repeat(2,1fr);}}
+  .stat-mini{background:var(--bg-panel-alt); border:1px solid var(--line); border-radius:9px; padding:14px; border-top:3px solid var(--bottle);}
+  .stat-mini .v{font-family:'Sora'; font-size:20px; font-weight:700; color:var(--brown-deep);}
+  .stat-mini .l{font-size:10.5px; color:var(--text-faint); margin-top:2px;}
+
+  .skill-row{display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--line);}
+  .skill-row:last-child{border-bottom:none;}
+  .skill-name{width:170px; font-size:13px; flex-shrink:0; color:var(--text);}
+  .skill-bar-bg{flex:1; height:6px; background:var(--bg-panel-alt); border-radius:4px; overflow:hidden;}
+  .skill-bar{height:100%; border-radius:4px; background:var(--bottle);}
+
+  .proj-card{background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:16px; border-left:4px solid var(--bottle);}
+  .proj-num{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--bottle); letter-spacing:1px;}
+  .proj-title{font-size:17px; font-weight:700; margin:4px 0 8px 0; color:var(--brown-deep);}
+  .proj-desc{font-size:13.5px; color:var(--text-dim); line-height:1.7; margin-bottom:12px;}
+  .tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
+  .tags span{font-family:'JetBrains Mono'; font-size:10px; padding:3px 8px; border-radius:5px; background:var(--lgreen-soft); color:var(--bottle-deep); border:1px solid var(--lgreen);}
+  .proj-card ul{padding-left:18px; color:var(--text-dim); font-size:13px; line-height:1.75;}
+  .proj-links{display:flex; gap:14px; font-family:'JetBrains Mono'; font-size:11.5px; margin-top:12px;}
+  .proj-links a{color:var(--bottle); border-bottom:1px solid transparent;}
+  .proj-links a:hover{border-bottom:1px solid var(--bottle);}
+
+  .tl-item{display:grid; grid-template-columns:140px 1fr; gap:18px; padding:16px 0; border-bottom:1px solid var(--line);}
+  .tl-item:last-child{border-bottom:none;}
+  .tl-date{font-family:'JetBrains Mono'; font-size:11px; color:var(--text-faint); padding-top:2px;}
+  .tl-item h4{font-size:14.5px; margin-bottom:2px; color:var(--brown-deep);}
+  .tl-org{font-size:12px; color:var(--bottle); font-family:'JetBrains Mono'; margin-bottom:8px; display:block;}
+  .tl-item ul{padding-left:18px; color:var(--text-dim); font-size:13px; line-height:1.7;}
+
+  .cert-row{display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-radius:8px; background:var(--bg-panel-alt); border:1px solid var(--line); margin-bottom:8px;}
+  .cert-row .cname{font-size:13.5px; color:var(--text);}
+  .cert-row .cdate{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--bottle-deep); padding:3px 9px; border-radius:5px; background:var(--lgreen-soft);}
+
+  .resume-frame{width:100%; height:78vh; border:1px solid var(--line); border-radius:var(--radius); background:#fff;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono'; font-size:12.5px;
+    padding:10px 18px; border-radius:8px; background:var(--bottle); color:#fff; font-weight:600;
+    border:none; cursor:pointer;
+  }
+  .btn:hover{background:var(--bottle-deep);}
+
+  ::-webkit-scrollbar{width:8px;}
+  ::-webkit-scrollbar-thumb{background:var(--bg-panel-alt); border-radius:4px;}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <img src="assets/profile-avatar.jpg" alt="Varun N">
+    <div>
+      <div class="name">Varun N</div>
+      <div class="role">Full Stack Developer</div>
+    </div>
+  </div>
+
+  <nav class="menu">
+    <div class="menu-label">Dashboard</div>
+    <div class="menu-item active" data-page="home"><span class="ic">⌂</span> Home</div>
+    <div class="menu-item" data-page="projects"><span class="ic">▣</span> Projects</div>
+    <div class="menu-item" data-page="qualifications"><span class="ic">▤</span> Qualification</div>
+    <div class="menu-item" data-page="experience"><span class="ic">◆</span> Experience</div>
+    <div class="menu-item" data-page="certificates"><span class="ic">✓</span> Certificate</div>
+    <div class="menu-item" data-page="resume"><span class="ic">▤</span> Resume</div>
+  </nav>
+
+  <div class="sidebar-foot">
+    <a href="mailto:varunraj0514@gmail.com">✉ varunraj0514@gmail.com</a>
+    <a href="tel:+917619589533">☎ +91 76195 89533</a>
+    <a href="https://www.linkedin.com/in/varun-n-07ba69395" target="_blank" rel="noopener">in/varun-n-07ba69395 ↗</a>
+    <a href="https://github.com/vr051688-collab" target="_blank" rel="noopener">github.com/vr051688-collab ↗</a>
+  </div>
+</aside>
+
+<main>
+
+  <section class="page active" id="page-home">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb">dashboard <span>/ home</span></div>
+        <div class="page-title">Welcome</div>
+        <div class="page-sub">Bengaluru, Karnataka · Full-stack developer across PHP/MySQL and MERN, with a data-analytics layer on top.</div>
+      </div>
+    </div>
+
+    <div class="home-grid">
+      <div class="profile-card">
+        <img src="assets/profile-avatar.jpg" alt="Varun N">
+        <h2>Varun N</h2>
+        <div class="ptitle">Full Stack Developer &amp; Data Analytics</div>
+        <div class="ploc">Bengaluru, Karnataka</div>
+        <div class="profile-links">
+          <a href="https://www.linkedin.com/in/varun-n-07ba69395" target="_blank" rel="noopener">in — LinkedIn ↗</a>
+          <a href="https://github.com/vr051688-collab" target="_blank" rel="noopener">⌘ GitHub ↗</a>
+          <a href="mailto:varunraj0514@gmail.com">✉ Email</a>
+          <a href="tel:+917619589533">☎ +91 76195 89533</a>
+        </div>
+        <div class="stat-strip">
+          <div class="stat-mini"><div class="v">8.74</div><div class="l">BCA CGPA</div></div>
+          <div class="stat-mini"><div class="v">4</div><div class="l">Projects</div></div>
+          <div class="stat-mini"><div class="v">6</div><div class="l">Simulations</div></div>
+          <div class="stat-mini"><div class="v">82%</div><div class="l">Web Dev Cert</div></div>
+        </div>
+      </div>
+
+      <div class="beside-panel">
+        <h3>Project titles &amp; links</h3>
+        <div class="sub">Quick access — code and live demo, beside the dashboard.</div>
+
+        <div class="link-row">
+          <div>
+            <div class="lt">Payroll Analytics Dashboard</div>
+            <div class="ls">MERN · Node · Express · MongoDB · React</div>
+          </div>
+          <div class="actions">
+            <a href="https://github.com/vr051688-collab/payroll-analytics-dashboard" target="_blank" rel="noopener">Code</a>
+            <a class="alt" href="https://payroll-analytics-dashboard.vercel.app" target="_blank" rel="noopener">Live</a>
+          </div>
+        </div>
+
+        <div class="link-row">
+          <div>
+            <div class="lt">Paynova</div>
+            <div class="ls">MERN · Company &amp; employee analytics</div>
+          </div>
+          <div class="actions">
+            <a href="https://github.com/vr051688-collab/paynova" target="_blank" rel="noopener">Code</a>
+            <a class="alt" href="https://poynovaa.netlify.app" target="_blank" rel="noopener">Live</a>
+          </div>
+        </div>
+
+        <div class="link-row">
+          <div>
+            <div class="lt">Payroll Management System</div>
+            <div class="ls">PHP · MySQL · Admin &amp; employee panels</div>
+          </div>
+          <div class="actions">
+            <a class="alt" href="#projects" onclick="showPage('projects')">Details</a>
+          </div>
+        </div>
+
+        <div class="link-row">
+          <div>
+            <div class="lt">E-Commerce — Online Jewelry Store</div>
+            <div class="ls">PHP · MySQL · HTML/CSS/JS</div>
+          </div>
+          <div class="actions">
+            <a class="alt" href="#projects" onclick="showPage('projects')">Details</a>
+          </div>
+        </div>
+
+        <p style="margin-top:8px; font-size:12px; color:var(--text-faint);">Open the <strong style="color:var(--bottle)">Projects</strong> tab in the dashboard for full write-ups, screenshots, and feature breakdowns.</p>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:20px;">
+      <h3><span class="dot"></span>About</h3>
+      <p>Full-stack development intern and BCA graduate with hands-on experience across PHP/MySQL and the MERN stack, including a full-featured payroll system with JWT authentication, role-based access control, automated payroll computation, and an analytics dashboard built on MongoDB aggregation pipelines.</p>
+      <p>Backed by a strong analytical foundation in Python (Pandas, NumPy, Scikit-learn), SQL, and data visualization — reinforced by data analytics and data science job simulations with Deloitte, BCG X, and Tata Group. Currently applying these skills as an E-Governance Data Analyst Specialist intern.</p>
+    </div>
+
+    <div class="panel">
+      <h3><span class="dot"></span>Core competencies</h3>
+      <div class="skill-row"><div class="skill-name">PHP / MySQL</div><div class="skill-bar-bg"><div class="skill-bar" style="width:88%"></div></div></div>
+      <div class="skill-row"><div class="skill-name">React / Node / Express</div><div class="skill-bar-bg"><div class="skill-bar" style="width:85%"></div></div></div>
+      <div class="skill-row"><div class="skill-name">MongoDB &amp; REST APIs</div><div class="skill-bar-bg"><div class="skill-bar" style="width:82%"></div></div></div>
+      <div class="skill-row"><div class="skill-name">JWT Auth &amp; RBAC</div><div class="skill-bar-bg"><div class="skill-bar" style="width:80%"></div></div></div>
+      <div class="skill-row"><div class="skill-name">Python / Pandas / NumPy</div><div class="skill-bar-bg"><div class="skill-bar" style="width:78%"></div></div></div>
+      <div class="skill-row"><div class="skill-name">SQL &amp; Data Visualization</div><div class="skill-bar-bg"><div class="skill-bar" style="width:80%"></div></div></div>
+      <div class="skill-row"><div class="skill-name">Jest / Supertest</div><div class="skill-bar-bg"><div class="skill-bar" style="width:75%"></div></div></div>
+      <div class="skill-row"><div class="skill-name">Git &amp; GitHub · Agile</div><div class="skill-bar-bg"><div class="skill-bar" style="width:84%"></div></div></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-projects">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb">dashboard <span>/ projects</span></div>
+        <div class="page-title">Projects</div>
+        <div class="page-sub">Four shipped builds spanning MERN and PHP/MySQL.</div>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-num">01 / MERN STACK · JUN 2026 – JUL 2026</div>
+      <div class="proj-title">Payroll Analytics Dashboard</div>
+      <div class="tags"><span>Node.js</span><span>Express</span><span>MongoDB</span><span>React / Vite</span><span>Recharts</span><span>JWT + RBAC</span><span>Jest / Supertest</span></div>
+      <div class="proj-desc">Full-stack payroll system — employee records, attendance tracking, automated payroll generation — with an analytics dashboard on MongoDB aggregation pipelines across a 150-employee dataset.</div>
+      <ul>
+        <li>Automated payroll math: Basic + DA + HRA + allowances − PF − tax − loss-of-pay.</li>
+        <li>JWT auth with RBAC (admin/employee), first-account admin lockdown, and guards against privilege-escalation via request-body role injection.</li>
+        <li>Hardened against NoSQL injection and IDOR: sanitized inputs, regex-escaped search, rate-limited auth endpoints, mandatory 32+ character JWT secret.</li>
+        <li>KPI summaries, department-wise cost/profit stats, monthly trend charts; 35+ test Jest/Supertest suite with coverage reporting.</li>
+      </ul>
+      <div class="proj-links">
+        <a href="https://github.com/vr051688-collab/payroll-analytics-dashboard" target="_blank" rel="noopener">↗ Code</a>
+        <a href="https://payroll-analytics-dashboard.vercel.app" target="_blank" rel="noopener">↗ Live demo</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-num">02 / MERN STACK</div>
+      <div class="proj-title">Paynova — Company &amp; Employee Analytics Platform</div>
+      <div class="tags"><span>MongoDB</span><span>Express</span><span>React</span><span>Node.js</span></div>
+      <div class="proj-desc">Company analytics platform tracking employee salary data alongside department-wise cost and profit metrics, with data models linking employees to departments for salary and profitability breakdowns.</div>
+      <ul>
+        <li>Login-based live demo with department-level salary, cost, and profit breakdowns.</li>
+        <li>Data models built to link employee records to departments for cross-cutting analytics.</li>
+      </ul>
+      <div class="proj-links">
+        <a href="https://github.com/vr051688-collab/paynova" target="_blank" rel="noopener">↗ Code</a>
+        <a href="https://poynovaa.netlify.app" target="_blank" rel="noopener">↗ Live demo</a>
+      </div>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-num">03 / PHP · MYSQL · FEB 2026</div>
+      <div class="proj-title">Payroll Management System</div>
+      <div class="tags"><span>PHP</span><span>MySQL</span><span>HTML / CSS</span><span>JavaScript</span></div>
+      <div class="proj-desc">PHP/MySQL system managing employee records, salary structure, DA, and compensation details, with separate admin and employee panels.</div>
+      <ul>
+        <li>Admin-side CRUD for employee records.</li>
+        <li>Payroll generation with a full payroll history view.</li>
+      </ul>
+    </div>
+
+    <div class="proj-card">
+      <div class="proj-num">04 / PHP · MYSQL · FEB 2026 – JUN 2026</div>
+      <div class="proj-title">E-Commerce Website — Online Jewelry Store</div>
+      <div class="tags"><span>PHP</span><span>MySQL</span><span>HTML / CSS</span><span>JavaScript</span></div>
+      <div class="proj-desc">PHP/MySQL e-commerce platform with a 40-product catalog, shopping cart, and checkout flow on a relational schema for listings, categories, and orders.</div>
+      <ul>
+        <li>Dynamic front-end pages for a responsive shopping experience.</li>
+        <li>Relational schema covering product listings, categories, and orders.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="page" id="page-qualifications">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb">dashboard <span>/ qualification</span></div>
+        <div class="page-title">Qualification</div>
+        <div class="page-sub">Education background.</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3><span class="dot"></span>Education</h3>
+      <div class="tl-item">
+        <div class="tl-date">2023 – 2026</div>
+        <div>
+          <h4>Bachelor of Computer Applications (BCA)</h4>
+          <span class="tl-org">Government First Grade College, Chikkaballapur — Bangalore University · CGPA 8.74/10 · NEP Curriculum</span>
+          <ul><li>Coursework: Database Management Systems, Data Structures &amp; Algorithms, Statistics for Computing, Python Programming, Software Engineering.</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-experience">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb">dashboard <span>/ experience</span></div>
+        <div class="page-title">Experience</div>
+        <div class="page-sub">Internships and hands-on roles.</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3><span class="dot"></span>Work experience</h3>
+      <div class="tl-item">
+        <div class="tl-date">JUL 2026 – PRESENT</div>
+        <div>
+          <h4>E-Governance Data Analyst Specialist Intern (Remote)</h4>
+          <span class="tl-org">YuvaIntern</span>
+          <ul>
+            <li>Analyze government service and digital initiative data using Excel and Tableau, surfacing trends that inform e-governance decision-making.</li>
+            <li>Partner with cross-functional stakeholders to turn raw data analysis into clear, actionable recommendations for improving service delivery.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">FEB 2026 – MAY 2026</div>
+        <div>
+          <h4>Full Stack Development Intern</h4>
+          <span class="tl-org">Harshan Digitech</span>
+          <ul>
+            <li>Completed an intensive Web Designing &amp; Development training program (E-Max Council for Vocational Training &amp; Education) — HTML, Advanced CSS, Advanced JavaScript, Bootstrap, Web Templates — 82% (A grade).</li>
+            <li>Translated training into independent, production-style builds: the PHP/MySQL Payroll Management System and E-Commerce Website.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="page-certificates">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb">dashboard <span>/ certificate</span></div>
+        <div class="page-title">Certificate</div>
+        <div class="page-sub">Job simulations and coursework, in the order completed.</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="cert-row"><span class="cname">Deloitte — Data Analytics Job Simulation</span><span class="cdate">FEB 2026</span></div>
+      <div class="cert-row"><span class="cname">BCG X — Data Science Job Simulation</span><span class="cdate">MAY 2026</span></div>
+      <div class="cert-row"><span class="cname">Tata Group — GenAI-Powered Data Analytics Simulation</span><span class="cdate">JUN 2026</span></div>
+      <div class="cert-row"><span class="cname">Wells Fargo — Technology Job Simulation</span><span class="cdate">FORAGE</span></div>
+      <div class="cert-row"><span class="cname">Datacom — Software Engineering Simulation</span><span class="cdate">FORAGE</span></div>
+      <div class="cert-row"><span class="cname">SAP — Analytics Cloud Planning Simulation</span><span class="cdate">FORAGE</span></div>
+      <div class="cert-row"><span class="cname">Infosys Springboard — Deep Learning for Developers / Intro to Data Science</span><span class="cdate">COURSE</span></div>
+      <div class="cert-row"><span class="cname">IndiaAI / TCS iON — YUVA AI For All</span><span class="cdate">COURSE</span></div>
+      <p style="margin-top:14px; font-size:12.5px; color:var(--text-dim);">Also participated in the <strong style="color:var(--brown-deep)">Full-Stack Tech Assessment</strong> organized by KR Nexus.</p>
+    </div>
+  </section>
+
+  <section class="page" id="page-resume">
+    <div class="topbar">
+      <div>
+        <div class="breadcrumb">dashboard <span>/ resume</span></div>
+        <div class="page-title">Resume</div>
+        <div class="page-sub">Full PDF, viewable inline or downloadable.</div>
+      </div>
+      <a class="btn" href="assets/Varun_N_Resume.pdf" download>⬇ Download PDF</a>
+    </div>
+    <iframe class="resume-frame" src="assets/Varun_N_Resume.pdf"></iframe>
+  </section>
+
+</main>
+
+<script>
+  const items = document.querySelectorAll('.menu-item');
+  const pages = document.querySelectorAll('.page');
+
+  function showPage(name){
+    pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
+    items.forEach(i => i.classList.toggle('active', i.dataset.page === name));
+    history.replaceState(null, '', '#' + name);
+  }
+  window.showPage = showPage;
+
+  items.forEach(item => {
+    item.addEventListener('click', () => showPage(item.dataset.page));
+  });
+
+  const initial = (location.hash || '#home').slice(1);
+  if(document.getElementById('page-' + initial)) showPage(initial);
+</script>
+
+</body>
+</html>
