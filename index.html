@@ -8,21 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f2e4cd;
-    --bg-panel:#fffaf0;
-    --bg-panel-alt:#e9d7b7;
-    --bg-card:#fdf6e8;
-    --line:#d8c19a;
-    --text:#3a2a18;
-    --text-dim:#7a6248;
-    --text-faint:#a08a68;
-    --brown:#6b3f22;
-    --brown-deep:#4a2c17;
-    --bottle:#154d33;
-    --bottle-deep:#0d3a26;
-    --lgreen:#7fae7a;
-    --lgreen-soft:#c9e0bd;
+    --bg:#0c0a09;
+    --bg-panel:#161211;
+    --bg-panel-alt:#211a17;
+    --bg-card:#181312;
+    --line:#33241d;
+    --text:#f2e6dc;
+    --text-dim:#bb9885;
+    --text-faint:#7a5f52;
+    --brown:#ff6a33;
+    --brown-deep:#c8431a;
+    --bottle:#e8491d;
+    --bottle-deep:#a8330f;
+    --lgreen:#ff9b52;
+    --lgreen-soft:#3a2419;
     --radius:10px;
+
+    --sidebar-bg:#0a0807;
+    --sidebar-bg-deep:#050403;
+    --sidebar-accent:#e8491d;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{
@@ -37,38 +41,39 @@
 
   .sidebar{
     width:260px; flex-shrink:0;
-    background:var(--bottle-deep);
-    color:#eaf3ec;
+    background:var(--sidebar-bg);
+    color:#f5e9df;
     display:flex; flex-direction:column;
     height:100vh; position:sticky; top:0;
     padding:22px 0;
+    border-right:1px solid var(--line);
   }
-  .sidebar-brand{padding:0 20px 18px 20px; border-bottom:1px solid rgba(255,255,255,0.12); margin-bottom:14px; display:flex; align-items:center; gap:12px;}
-  .sidebar-brand img{width:52px; height:52px; border-radius:12px; object-fit:cover; box-shadow:0 0 0 2px var(--bottle-deep), 0 0 0 4px var(--lgreen);}
+  .sidebar-brand{padding:0 20px 18px 20px; border-bottom:1px solid rgba(232,73,29,0.18); margin-bottom:14px; display:flex; align-items:center; gap:12px;}
+  .sidebar-brand img{width:52px; height:52px; border-radius:12px; object-fit:cover; box-shadow:0 0 0 2px var(--sidebar-bg), 0 0 0 4px var(--sidebar-accent), 0 0 14px rgba(232,73,29,0.5);}
   .sidebar-brand .name{font-family:'Sora'; font-weight:700; font-size:16px;}
-  .sidebar-brand .role{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--lgreen-soft); margin-top:3px;}
+  .sidebar-brand .role{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--lgreen); margin-top:3px;}
 
   nav.menu{flex:1; padding:6px 12px; overflow-y:auto;}
-  .menu-label{font-family:'JetBrains Mono'; font-size:10px; letter-spacing:1.5px; color:rgba(234,243,236,0.45); padding:14px 10px 6px 10px; text-transform:uppercase;}
+  .menu-label{font-family:'JetBrains Mono'; font-size:10px; letter-spacing:1.5px; color:rgba(245,233,223,0.4); padding:14px 10px 6px 10px; text-transform:uppercase;}
   .menu-item{
     display:flex; align-items:center; gap:10px;
     padding:10px 12px; border-radius:8px; cursor:pointer;
-    font-size:13.5px; color:rgba(234,243,236,0.8); margin-bottom:2px;
+    font-size:13.5px; color:rgba(245,233,223,0.75); margin-bottom:2px;
     border-left:3px solid transparent;
   }
   .menu-item .ic{width:20px; text-align:center; font-size:13px;}
-  .menu-item:hover{background:rgba(255,255,255,0.06); color:#fff;}
-  .menu-item.active{background:rgba(127,174,122,0.18); color:#fff; border-left:3px solid var(--lgreen);}
+  .menu-item:hover{background:rgba(232,73,29,0.08); color:#fff;}
+  .menu-item.active{background:rgba(232,73,29,0.16); color:#fff; border-left:3px solid var(--sidebar-accent);}
 
-  .sidebar-foot{padding:14px 20px 0 20px; border-top:1px solid rgba(255,255,255,0.12); margin-top:10px;}
-  .sidebar-foot a{display:block; font-size:11.5px; color:rgba(234,243,236,0.75); margin-bottom:8px;}
-  .sidebar-foot a:hover{color:#fff;}
+  .sidebar-foot{padding:14px 20px 0 20px; border-top:1px solid rgba(232,73,29,0.18); margin-top:10px;}
+  .sidebar-foot a{display:block; font-size:11.5px; color:rgba(245,233,223,0.7); margin-bottom:8px;}
+  .sidebar-foot a:hover{color:var(--lgreen);}
 
   main{flex:1; min-width:0; padding:32px 40px 60px 40px;}
   .topbar{display:flex; align-items:baseline; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:10px;}
   .breadcrumb{font-family:'JetBrains Mono'; font-size:11.5px; color:var(--text-faint);}
   .breadcrumb span{color:var(--brown);}
-  .page-title{font-size:26px; font-weight:700; margin-top:4px; color:var(--brown-deep);}
+  .page-title{font-size:26px; font-weight:700; margin-top:4px; color:#fff;}
   .page-sub{color:var(--text-dim); font-size:13.5px; margin-top:6px; max-width:640px;}
 
   .page{display:none;}
@@ -76,8 +81,8 @@
   @keyframes fadein{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
 
   .panel{background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:18px;}
-  .panel h3{font-size:15px; margin-bottom:12px; display:flex; align-items:center; gap:8px; color:var(--brown-deep);}
-  .panel h3 .dot{width:8px; height:8px; border-radius:2px; background:var(--bottle);}
+  .panel h3{font-size:15px; margin-bottom:12px; display:flex; align-items:center; gap:8px; color:#fff;}
+  .panel h3 .dot{width:8px; height:8px; border-radius:2px; background:var(--bottle); box-shadow:0 0 8px rgba(232,73,29,0.7);}
   .panel p{font-size:13.5px; line-height:1.7; color:var(--text-dim);}
   .panel p + p{margin-top:10px;}
 
@@ -85,69 +90,73 @@
   @media(max-width:860px){.home-grid{grid-template-columns:1fr;}}
 
   .profile-card{background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:26px; text-align:center;}
-  .profile-card img{width:120px; height:120px; border-radius:16px; object-fit:cover; box-shadow:0 0 0 3px var(--bg-card), 0 0 0 6px var(--lgreen); margin-bottom:16px;}
-  .profile-card h2{font-size:19px; color:var(--brown-deep);}
-  .profile-card .ptitle{font-family:'JetBrains Mono'; font-size:11.5px; color:var(--bottle); margin-top:4px;}
+  .profile-card img{width:120px; height:120px; border-radius:16px; object-fit:cover; box-shadow:0 0 0 3px var(--bg-card), 0 0 0 6px var(--lgreen), 0 0 20px rgba(232,73,29,0.45); margin-bottom:16px;}
+  .profile-card h2{font-size:19px; color:#fff;}
+  .profile-card .ptitle{font-family:'JetBrains Mono'; font-size:11.5px; color:var(--brown); margin-top:4px;}
   .profile-card .ploc{font-size:12px; color:var(--text-faint); margin-top:8px;}
   .profile-links{display:flex; flex-direction:column; gap:8px; margin-top:18px;}
   .profile-links a{
     font-family:'JetBrains Mono'; font-size:11.5px; padding:9px 12px; border-radius:8px;
-    background:var(--bg-panel-alt); color:var(--brown-deep); border:1px solid var(--line);
+    background:var(--bg-panel-alt); color:var(--text); border:1px solid var(--line);
     display:flex; align-items:center; gap:8px; justify-content:center;
   }
-  .profile-links a:hover{background:var(--lgreen-soft); border-color:var(--lgreen);}
+  .profile-links a:hover{background:var(--lgreen-soft); border-color:var(--bottle);}
 
   .beside-panel{background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px;}
-  .beside-panel h3{font-size:15px; margin-bottom:4px; color:var(--brown-deep);}
+  .beside-panel h3{font-size:15px; margin-bottom:4px; color:#fff;}
   .beside-panel .sub{font-size:12px; color:var(--text-faint); margin-bottom:16px;}
   .link-row{
     display:flex; justify-content:space-between; align-items:center; gap:12px;
     padding:14px 16px; border-radius:9px; background:var(--bg-panel-alt); border:1px solid var(--line);
     margin-bottom:10px;
   }
-  .link-row .lt{font-size:13.5px; font-weight:600; color:var(--brown-deep);}
+  .link-row .lt{font-size:13.5px; font-weight:600; color:#fff;}
   .link-row .ls{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--text-faint); margin-top:3px;}
   .link-row .actions{display:flex; gap:8px; flex-shrink:0;}
   .link-row .actions a{
     font-family:'JetBrains Mono'; font-size:10.5px; padding:6px 11px; border-radius:6px;
     background:var(--bottle); color:#fff;
   }
-  .link-row .actions a.alt{background:transparent; border:1px solid var(--bottle); color:var(--bottle);}
+  .link-row .actions a.alt{background:transparent; border:1px solid var(--bottle); color:var(--brown);}
   .link-row .actions a:hover{background:var(--bottle-deep);}
 
   .stat-strip{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:18px;}
   @media(max-width:700px){.stat-strip{grid-template-columns:repeat(2,1fr);}}
   .stat-mini{background:var(--bg-panel-alt); border:1px solid var(--line); border-radius:9px; padding:14px; border-top:3px solid var(--bottle);}
-  .stat-mini .v{font-family:'Sora'; font-size:20px; font-weight:700; color:var(--brown-deep);}
+  .stat-mini .v{font-family:'Sora'; font-size:20px; font-weight:700; color:#fff;}
   .stat-mini .l{font-size:10.5px; color:var(--text-faint); margin-top:2px;}
 
   .skill-row{display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--line);}
   .skill-row:last-child{border-bottom:none;}
   .skill-name{width:170px; font-size:13px; flex-shrink:0; color:var(--text);}
   .skill-bar-bg{flex:1; height:6px; background:var(--bg-panel-alt); border-radius:4px; overflow:hidden;}
-  .skill-bar{height:100%; border-radius:4px; background:var(--bottle);}
+  .skill-bar{height:100%; border-radius:4px; background:linear-gradient(90deg,var(--bottle-deep),var(--bottle));}
 
   .proj-card{background:var(--bg-card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; margin-bottom:16px; border-left:4px solid var(--bottle);}
-  .proj-num{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--bottle); letter-spacing:1px;}
-  .proj-title{font-size:17px; font-weight:700; margin:4px 0 8px 0; color:var(--brown-deep);}
+  .proj-num{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--brown); letter-spacing:1px;}
+  .proj-title{font-size:17px; font-weight:700; margin:4px 0 8px 0; color:#fff;}
   .proj-desc{font-size:13.5px; color:var(--text-dim); line-height:1.7; margin-bottom:12px;}
   .tags{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;}
-  .tags span{font-family:'JetBrains Mono'; font-size:10px; padding:3px 8px; border-radius:5px; background:var(--lgreen-soft); color:var(--bottle-deep); border:1px solid var(--lgreen);}
+  .tags span{font-family:'JetBrains Mono'; font-size:10px; padding:3px 8px; border-radius:5px; background:var(--lgreen-soft); color:var(--lgreen); border:1px solid var(--bottle-deep);}
   .proj-card ul{padding-left:18px; color:var(--text-dim); font-size:13px; line-height:1.75;}
   .proj-links{display:flex; gap:14px; font-family:'JetBrains Mono'; font-size:11.5px; margin-top:12px;}
-  .proj-links a{color:var(--bottle); border-bottom:1px solid transparent;}
-  .proj-links a:hover{border-bottom:1px solid var(--bottle);}
+  .proj-links a{color:var(--brown); border-bottom:1px solid transparent;}
+  .proj-links a:hover{border-bottom:1px solid var(--brown);}
+
+  .proj-gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-top:14px;}
+  .proj-gallery img{width:100%; height:110px; object-fit:cover; object-position:top; border-radius:8px; border:1px solid var(--line); cursor:pointer; transition:border-color .2s, transform .2s;}
+  .proj-gallery img:hover{border-color:var(--bottle); transform:scale(1.02);}
 
   .tl-item{display:grid; grid-template-columns:140px 1fr; gap:18px; padding:16px 0; border-bottom:1px solid var(--line);}
   .tl-item:last-child{border-bottom:none;}
   .tl-date{font-family:'JetBrains Mono'; font-size:11px; color:var(--text-faint); padding-top:2px;}
-  .tl-item h4{font-size:14.5px; margin-bottom:2px; color:var(--brown-deep);}
-  .tl-org{font-size:12px; color:var(--bottle); font-family:'JetBrains Mono'; margin-bottom:8px; display:block;}
+  .tl-item h4{font-size:14.5px; margin-bottom:2px; color:#fff;}
+  .tl-org{font-size:12px; color:var(--brown); font-family:'JetBrains Mono'; margin-bottom:8px; display:block;}
   .tl-item ul{padding-left:18px; color:var(--text-dim); font-size:13px; line-height:1.7;}
 
   .cert-row{display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-radius:8px; background:var(--bg-panel-alt); border:1px solid var(--line); margin-bottom:8px;}
   .cert-row .cname{font-size:13.5px; color:var(--text);}
-  .cert-row .cdate{font-family:'JetBrains Mono'; font-size:10.5px; color:var(--bottle-deep); padding:3px 9px; border-radius:5px; background:var(--lgreen-soft);}
+  .cert-row .cdate{font-family:'JetBrains Mono'; font-size:10.5px; color:#fff; padding:3px 9px; border-radius:5px; background:var(--bottle-deep);}
 
   .resume-frame{width:100%; height:78vh; border:1px solid var(--line); border-radius:var(--radius); background:#fff;}
   .btn{
@@ -203,7 +212,7 @@
 
     <div class="home-grid">
       <div class="profile-card">
-        <img src="assets/profile-avatar.jpg" alt="Varun N">
+        <img src="wp10502462.jpg" alt="Varun N">
         <h2>Varun N</h2>
         <div class="ptitle">Full Stack Developer &amp; Data Analytics</div>
         <div class="ploc">Bengaluru, Karnataka</div>
@@ -267,7 +276,7 @@
           </div>
         </div>
 
-        <p style="margin-top:8px; font-size:12px; color:var(--text-faint);">Open the <strong style="color:var(--bottle)">Projects</strong> tab in the dashboard for full write-ups, screenshots, and feature breakdowns.</p>
+        <p style="margin-top:8px; font-size:12px; color:var(--text-faint);">Open the <strong style="color:var(--brown)">Projects</strong> tab in the dashboard for full write-ups, screenshots, and feature breakdowns.</p>
       </div>
     </div>
 
@@ -310,6 +319,13 @@
         <li>Hardened against NoSQL injection and IDOR: sanitized inputs, regex-escaped search, rate-limited auth endpoints, mandatory 32+ character JWT secret.</li>
         <li>KPI summaries, department-wise cost/profit stats, monthly trend charts; 35+ test Jest/Supertest suite with coverage reporting.</li>
       </ul>
+      <div class="proj-gallery">
+        <img src="assets/payroll-dashboard-1.png" alt="Payroll dashboard overview">
+        <img src="assets/payroll-dashboard-composite.png" alt="Payroll dashboard, employees, payslip and reports views">
+        <img src="assets/payroll-forecast-chart.png" alt="Monthly net payroll cost trend and forecast">
+        <img src="assets/department-payroll-chart.png" alt="Department payroll cost chart">
+        <img src="assets/absenteeism-charts.png" alt="Absenteeism rate by month and department">
+      </div>
       <div class="proj-links">
         <a href="https://github.com/vr051688-collab/payroll-analytics-dashboard" target="_blank" rel="noopener">↗ Code</a>
         <a href="https://payroll-analytics-dashboard.vercel.app" target="_blank" rel="noopener">↗ Live demo</a>
@@ -351,6 +367,11 @@
         <li>Dynamic front-end pages for a responsive shopping experience.</li>
         <li>Relational schema covering product listings, categories, and orders.</li>
       </ul>
+      <div class="proj-gallery">
+        <img src="assets/glamoura-jewellery-hero.png" alt="Jewelry store homepage hero">
+        <img src="assets/jewelry-shop-grid.png" alt="Jewelry shop product listing page">
+        <img src="assets/jewelry-admin-dashboard.png" alt="Jewelry shop admin dashboard">
+      </div>
     </div>
   </section>
 
@@ -362,8 +383,10 @@
         <div class="page-sub">Education background.</div>
       </div>
     </div>
+
     <div class="panel">
       <h3><span class="dot"></span>Education</h3>
+
       <div class="tl-item">
         <div class="tl-date">2023 – 2026</div>
         <div>
@@ -372,6 +395,25 @@
           <ul><li>Coursework: Database Management Systems, Data Structures &amp; Algorithms, Statistics for Computing, Python Programming, Software Engineering.</li></ul>
         </div>
       </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2021 – 2023</div>
+        <div>
+          <h4>PUC — Commerce (PU C EBAcs)</h4>
+          <span class="tl-org">BGS PU College, Chikkaballapur</span>
+          <ul><li>71%</li></ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-date">2021</div>
+        <div>
+          <h4>SSLC / 10th — Karnataka State Board</h4>
+          <span class="tl-org">Indian Public School, Chikkaballapur</span>
+          <ul><li>87%</li></ul>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -383,8 +425,10 @@
         <div class="page-sub">Internships and hands-on roles.</div>
       </div>
     </div>
+
     <div class="panel">
       <h3><span class="dot"></span>Work experience</h3>
+
       <div class="tl-item">
         <div class="tl-date">JUL 2026 – PRESENT</div>
         <div>
@@ -396,6 +440,7 @@
           </ul>
         </div>
       </div>
+
       <div class="tl-item">
         <div class="tl-date">FEB 2026 – MAY 2026</div>
         <div>
@@ -418,6 +463,7 @@
         <div class="page-sub">Job simulations and coursework, in the order completed.</div>
       </div>
     </div>
+
     <div class="panel">
       <div class="cert-row"><span class="cname">Deloitte — Data Analytics Job Simulation</span><span class="cdate">FEB 2026</span></div>
       <div class="cert-row"><span class="cname">BCG X — Data Science Job Simulation</span><span class="cdate">MAY 2026</span></div>
@@ -427,7 +473,7 @@
       <div class="cert-row"><span class="cname">SAP — Analytics Cloud Planning Simulation</span><span class="cdate">FORAGE</span></div>
       <div class="cert-row"><span class="cname">Infosys Springboard — Deep Learning for Developers / Intro to Data Science</span><span class="cdate">COURSE</span></div>
       <div class="cert-row"><span class="cname">IndiaAI / TCS iON — YUVA AI For All</span><span class="cdate">COURSE</span></div>
-      <p style="margin-top:14px; font-size:12.5px; color:var(--text-dim);">Also participated in the <strong style="color:var(--brown-deep)">Full-Stack Tech Assessment</strong> organized by KR Nexus.</p>
+      <p style="margin-top:14px; font-size:12.5px; color:var(--text-dim);">Also participated in the <strong style="color:var(--brown)">Full-Stack Tech Assessment</strong> organized by KR Nexus.</p>
     </div>
   </section>
 
@@ -438,9 +484,9 @@
         <div class="page-title">Resume</div>
         <div class="page-sub">Full PDF, viewable inline or downloadable.</div>
       </div>
-      <a class="btn" href="assets/Varun%20CV.pdf"download>⬇ Download PDF</a>
+      <a class="btn" href="Varun%20CV.pdf" download>⬇ Download PDF</a>
     </div>
-    <iframe class="resume-frame" src="assets/Varun%20CV.pdf"></iframe>
+    <iframe class="resume-frame" src="Varun%20CV.pdf"></iframe>
   </section>
 
 </main>
@@ -463,6 +509,5 @@
   const initial = (location.hash || '#home').slice(1);
   if(document.getElementById('page-' + initial)) showPage(initial);
 </script>
-
 </body>
 </html>
