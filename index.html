@@ -168,6 +168,40 @@
 
   ::-webkit-scrollbar{width:8px;}
   ::-webkit-scrollbar-thumb{background:var(--bg-panel-alt); border-radius:4px;}
+
+  /* --- scroll reveal animations --- */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+  .reveal-left{transform:translateX(-32px);}
+  .reveal-left.in-view{transform:translateX(0);}
+  .reveal-right{transform:translateX(32px);}
+  .reveal-right.in-view{transform:translateX(0);}
+  .reveal:nth-child(1){transition-delay:.05s;}
+  .reveal:nth-child(2){transition-delay:.12s;}
+  .reveal:nth-child(3){transition-delay:.19s;}
+  .reveal:nth-child(4){transition-delay:.26s;}
+  .reveal:nth-child(5){transition-delay:.33s;}
+  .proj-card.reveal.in-view, .panel.reveal.in-view{box-shadow:0 8px 24px rgba(0,0,0,0.35), 0 0 0 1px rgba(232,73,29,0.15);}
+
+  /* --- hero / profile animations --- */
+  @keyframes glowPulse{0%,100%{box-shadow:0 0 0 3px var(--bg-card),0 0 0 6px var(--lgreen),0 0 20px rgba(232,73,29,0.45);} 50%{box-shadow:0 0 0 3px var(--bg-card),0 0 0 6px var(--lgreen),0 0 34px rgba(232,73,29,0.85);}}
+  .profile-card img{animation:glowPulse 2.8s ease-in-out infinite;}
+  @keyframes growBar{from{transform:scaleX(0);} to{transform:scaleX(1);}}
+  .skill-bar{transform-origin:left; animation:growBar 1.3s cubic-bezier(.16,1,.3,1) both;}
+  .skill-row:nth-child(1) .skill-bar{animation-delay:.05s;}
+  .skill-row:nth-child(2) .skill-bar{animation-delay:.12s;}
+  .skill-row:nth-child(3) .skill-bar{animation-delay:.19s;}
+  .skill-row:nth-child(4) .skill-bar{animation-delay:.26s;}
+  .skill-row:nth-child(5) .skill-bar{animation-delay:.33s;}
+  .skill-row:nth-child(6) .skill-bar{animation-delay:.40s;}
+  .skill-row:nth-child(7) .skill-bar{animation-delay:.47s;}
+  .skill-row:nth-child(8) .skill-bar{animation-delay:.54s;}
+
+  /* --- project card hover lift --- */
+  .proj-card{transition:transform .25s ease, box-shadow .25s ease;}
+  .proj-card:hover{transform:translateY(-4px); box-shadow:0 10px 26px rgba(0,0,0,0.4), 0 0 0 1px rgba(232,73,29,0.25);}
+  .link-row{transition:transform .2s ease, background .2s ease;}
+  .link-row:hover{transform:translateX(3px);}
 </style>
 </head>
 <body>
@@ -211,7 +245,7 @@
     </div>
 
     <div class="home-grid">
-      <div class="profile-card">
+      <div class="profile-card reveal reveal-left">
         <img src="wp10502462.jpg" alt="Varun N">
         <h2>Varun N</h2>
         <div class="ptitle">Full Stack Developer &amp; Data Analytics</div>
@@ -230,7 +264,7 @@
         </div>
       </div>
 
-      <div class="beside-panel">
+      <div class="beside-panel reveal reveal-right">
         <h3>Project titles &amp; links</h3>
         <div class="sub">Quick access — code and live demo, beside the dashboard.</div>
 
@@ -280,13 +314,13 @@
       </div>
     </div>
 
-    <div class="panel" style="margin-top:20px;">
+    <div class="panel reveal" style="margin-top:20px;">
       <h3><span class="dot"></span>About</h3>
       <p>Full-stack development intern and BCA graduate with hands-on experience across PHP/MySQL and the MERN stack, including a full-featured payroll system with JWT authentication, role-based access control, automated payroll computation, and an analytics dashboard built on MongoDB aggregation pipelines.</p>
       <p>Backed by a strong analytical foundation in Python (Pandas, NumPy, Scikit-learn), SQL, and data visualization — reinforced by data analytics and data science job simulations with Deloitte, BCG X, and Tata Group. Currently applying these skills as an E-Governance Data Analyst Specialist intern.</p>
     </div>
 
-    <div class="panel">
+    <div class="panel reveal">
       <h3><span class="dot"></span>Core competencies</h3>
       <div class="skill-row"><div class="skill-name">PHP / MySQL</div><div class="skill-bar-bg"><div class="skill-bar" style="width:88%"></div></div></div>
       <div class="skill-row"><div class="skill-name">React / Node / Express</div><div class="skill-bar-bg"><div class="skill-bar" style="width:85%"></div></div></div>
@@ -308,206 +342,8 @@
       </div>
     </div>
 
-    <div class="proj-card">
+    <div class="proj-card reveal">
       <div class="proj-num">01 / MERN STACK · JUN 2026 – JUL 2026</div>
       <div class="proj-title">Payroll Analytics Dashboard</div>
       <div class="tags"><span>Node.js</span><span>Express</span><span>MongoDB</span><span>React / Vite</span><span>Recharts</span><span>JWT + RBAC</span><span>Jest / Supertest</span></div>
-      <div class="proj-desc">Full-stack payroll system — employee records, attendance tracking, automated payroll generation — with an analytics dashboard on MongoDB aggregation pipelines across a 150-employee dataset.</div>
-      <ul>
-        <li>Automated payroll math: Basic + DA + HRA + allowances − PF − tax − loss-of-pay.</li>
-        <li>JWT auth with RBAC (admin/employee), first-account admin lockdown, and guards against privilege-escalation via request-body role injection.</li>
-        <li>Hardened against NoSQL injection and IDOR: sanitized inputs, regex-escaped search, rate-limited auth endpoints, mandatory 32+ character JWT secret.</li>
-        <li>KPI summaries, department-wise cost/profit stats, monthly trend charts; 35+ test Jest/Supertest suite with coverage reporting.</li>
-      </ul>
-      <div class="proj-gallery">
-        <img src="assets/payroll-dashboard-1.png" alt="Payroll dashboard overview">
-        <img src="assets/payroll-dashboard-composite.png" alt="Payroll dashboard, employees, payslip and reports views">
-        <img src="assets/payroll-forecast-chart.png" alt="Monthly net payroll cost trend and forecast">
-        <img src="assets/department-payroll-chart.png" alt="Department payroll cost chart">
-        <img src="assets/absenteeism-charts.png" alt="Absenteeism rate by month and department">
-      </div>
-      <div class="proj-links">
-        <a href="https://github.com/vr051688-collab/payroll-analytics-dashboard" target="_blank" rel="noopener">↗ Code</a>
-        <a href="https://payroll-analytics-dashboard.vercel.app" target="_blank" rel="noopener">↗ Live demo</a>
-      </div>
-    </div>
-
-    <div class="proj-card">
-      <div class="proj-num">02 / MERN STACK</div>
-      <div class="proj-title">Paynova — Company &amp; Employee Analytics Platform</div>
-      <div class="tags"><span>MongoDB</span><span>Express</span><span>React</span><span>Node.js</span></div>
-      <div class="proj-desc">Company analytics platform tracking employee salary data alongside department-wise cost and profit metrics, with data models linking employees to departments for salary and profitability breakdowns.</div>
-      <ul>
-        <li>Login-based live demo with department-level salary, cost, and profit breakdowns.</li>
-        <li>Data models built to link employee records to departments for cross-cutting analytics.</li>
-      </ul>
-      <div class="proj-links">
-        <a href="https://github.com/vr051688-collab/paynova" target="_blank" rel="noopener">↗ Code</a>
-        <a href="https://poynovaa.netlify.app" target="_blank" rel="noopener">↗ Live demo</a>
-      </div>
-    </div>
-
-    <div class="proj-card">
-      <div class="proj-num">03 / PHP · MYSQL · FEB 2026</div>
-      <div class="proj-title">Payroll Management System</div>
-      <div class="tags"><span>PHP</span><span>MySQL</span><span>HTML / CSS</span><span>JavaScript</span></div>
-      <div class="proj-desc">PHP/MySQL system managing employee records, salary structure, DA, and compensation details, with separate admin and employee panels.</div>
-      <ul>
-        <li>Admin-side CRUD for employee records.</li>
-        <li>Payroll generation with a full payroll history view.</li>
-      </ul>
-    </div>
-
-    <div class="proj-card">
-      <div class="proj-num">04 / PHP · MYSQL · FEB 2026 – JUN 2026</div>
-      <div class="proj-title">E-Commerce Website — Online Jewelry Store</div>
-      <div class="tags"><span>PHP</span><span>MySQL</span><span>HTML / CSS</span><span>JavaScript</span></div>
-      <div class="proj-desc">PHP/MySQL e-commerce platform with a 40-product catalog, shopping cart, and checkout flow on a relational schema for listings, categories, and orders.</div>
-      <ul>
-        <li>Dynamic front-end pages for a responsive shopping experience.</li>
-        <li>Relational schema covering product listings, categories, and orders.</li>
-      </ul>
-      <div class="proj-gallery">
-        <img src="assets/glamoura-jewellery-hero.png" alt="Jewelry store homepage hero">
-        <img src="assets/jewelry-shop-grid.png" alt="Jewelry shop product listing page">
-        <img src="assets/jewelry-admin-dashboard.png" alt="Jewelry shop admin dashboard">
-      </div>
-    </div>
-  </section>
-
-  <section class="page" id="page-qualifications">
-    <div class="topbar">
-      <div>
-        <div class="breadcrumb">dashboard <span>/ qualification</span></div>
-        <div class="page-title">Qualification</div>
-        <div class="page-sub">Education background.</div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h3><span class="dot"></span>Education</h3>
-
-      <div class="tl-item">
-        <div class="tl-date">2023 – 2026</div>
-        <div>
-          <h4>Bachelor of Computer Applications (BCA)</h4>
-          <span class="tl-org">Government First Grade College, Chikkaballapur — Bangalore University · CGPA 8.74/10 · NEP Curriculum</span>
-          <ul><li>Coursework: Database Management Systems, Data Structures &amp; Algorithms, Statistics for Computing, Python Programming, Software Engineering.</li></ul>
-        </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-date">2021 – 2023</div>
-        <div>
-          <h4>PUC — Commerce (PU C EBAcs)</h4>
-          <span class="tl-org">BGS PU College, Chikkaballapur</span>
-          <ul><li>71%</li></ul>
-        </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-date">2021</div>
-        <div>
-          <h4>SSLC / 10th — Karnataka State Board</h4>
-          <span class="tl-org">Indian Public School, Chikkaballapur</span>
-          <ul><li>87%</li></ul>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="page" id="page-experience">
-    <div class="topbar">
-      <div>
-        <div class="breadcrumb">dashboard <span>/ experience</span></div>
-        <div class="page-title">Experience</div>
-        <div class="page-sub">Internships and hands-on roles.</div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h3><span class="dot"></span>Work experience</h3>
-
-      <div class="tl-item">
-        <div class="tl-date">JUL 2026 – PRESENT</div>
-        <div>
-          <h4>E-Governance Data Analyst Specialist Intern (Remote)</h4>
-          <span class="tl-org">YuvaIntern</span>
-          <ul>
-            <li>Analyze government service and digital initiative data using Excel and Tableau, surfacing trends that inform e-governance decision-making.</li>
-            <li>Partner with cross-functional stakeholders to turn raw data analysis into clear, actionable recommendations for improving service delivery.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tl-item">
-        <div class="tl-date">FEB 2026 – MAY 2026</div>
-        <div>
-          <h4>Full Stack Development Intern</h4>
-          <span class="tl-org">Harshan Digitech</span>
-          <ul>
-            <li>Completed an intensive Web Designing &amp; Development training program (E-Max Council for Vocational Training &amp; Education) — HTML, Advanced CSS, Advanced JavaScript, Bootstrap, Web Templates — 82% (A grade).</li>
-            <li>Translated training into independent, production-style builds: the PHP/MySQL Payroll Management System and E-Commerce Website.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="page" id="page-certificates">
-    <div class="topbar">
-      <div>
-        <div class="breadcrumb">dashboard <span>/ certificate</span></div>
-        <div class="page-title">Certificate</div>
-        <div class="page-sub">Job simulations and coursework, in the order completed.</div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <div class="cert-row"><span class="cname">Deloitte — Data Analytics Job Simulation</span><span class="cdate">FEB 2026</span></div>
-      <div class="cert-row"><span class="cname">BCG X — Data Science Job Simulation</span><span class="cdate">MAY 2026</span></div>
-      <div class="cert-row"><span class="cname">Tata Group — GenAI-Powered Data Analytics Simulation</span><span class="cdate">JUN 2026</span></div>
-      <div class="cert-row"><span class="cname">Wells Fargo — Technology Job Simulation</span><span class="cdate">FORAGE</span></div>
-      <div class="cert-row"><span class="cname">Datacom — Software Engineering Simulation</span><span class="cdate">FORAGE</span></div>
-      <div class="cert-row"><span class="cname">SAP — Analytics Cloud Planning Simulation</span><span class="cdate">FORAGE</span></div>
-      <div class="cert-row"><span class="cname">Infosys Springboard — Deep Learning for Developers / Intro to Data Science</span><span class="cdate">COURSE</span></div>
-      <div class="cert-row"><span class="cname">IndiaAI / TCS iON — YUVA AI For All</span><span class="cdate">COURSE</span></div>
-      <p style="margin-top:14px; font-size:12.5px; color:var(--text-dim);">Also participated in the <strong style="color:var(--brown)">Full-Stack Tech Assessment</strong> organized by KR Nexus.</p>
-    </div>
-  </section>
-
-  <section class="page" id="page-resume">
-    <div class="topbar">
-      <div>
-        <div class="breadcrumb">dashboard <span>/ resume</span></div>
-        <div class="page-title">Resume</div>
-        <div class="page-sub">Full PDF, viewable inline or downloadable.</div>
-      </div>
-      <a class="btn" href="Varun%20CV.pdf" download>⬇ Download PDF</a>
-    </div>
-    <iframe class="resume-frame" src="Varun%20CV.pdf"></iframe>
-  </section>
-
-</main>
-
-<script>
-  const items = document.querySelectorAll('.menu-item');
-  const pages = document.querySelectorAll('.page');
-
-  function showPage(name){
-    pages.forEach(p => p.classList.toggle('active', p.id === 'page-' + name));
-    items.forEach(i => i.classList.toggle('active', i.dataset.page === name));
-    history.replaceState(null, '', '#' + name);
-  }
-  window.showPage = showPage;
-
-  items.forEach(item => {
-    item.addEventListener('click', () => showPage(item.dataset.page));
-  });
-
-  const initial = (location.hash || '#home').slice(1);
-  if(document.getElementById('page-' + initial)) showPage(initial);
-</script>
-</body>
-</html>
+      <div class="proj-desc">Full-stack payroll system — employee records, attendance tracking, automated payroll generation — with an analytics dashboard on MongoDB aggregation pipelines across a 150-
